@@ -1,4 +1,4 @@
-name: Python application
+name: Landing PAGE
 
 on:
   push:
@@ -30,5 +30,3 @@ jobs:
     
     - name: Publicar la imagen creada
       run: docker push ghcr.io/jpaandrango/landing:1.0.0
-
-
