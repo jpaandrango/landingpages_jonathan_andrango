@@ -1,1 +1,25 @@
 version: '3.9'
+
+services:
+  andrango:
+    image: ghcr.io/jpaandrango/landing:1.0.0
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.andrango.entrypoints=http"
+        - "traefik.http.routers.andrango.rule=Host(andrango.byronrm.com)"
+        - "traefik.http.middlewares.andrango-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.andrango.middlewares=andrango-https-redirect"
+        - "traefik.http.routers.andrango-secure.entrypoints=https"
+        - "traefik.http.routers.andrango-secure.rule=Host(andrango.byronrm.com)"
+        - "traefik.http.routers.andrango-secure.tls=true"
+        - "traefik.http.routers.andrango-secure.tls.certresolver=http"
+        - "traefik.http.routers.andrango-secure.service=andrango"
+        - "traefik.http.services.andrango.loadbalancer.server.port=5000"
+        - "traefik.docker.network=traefik-public"
+networks:
+  traefik-public:
+    external: true
